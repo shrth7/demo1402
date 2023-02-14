@@ -1,27 +1,25 @@
 pipeline {
     agent any
-    stages{
-        stage("ECR login"){
-            steps{
-            sh 'aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws/s2l4n6u7'
+    stages {
+        stage('Code checkout') {
+            steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: '23fdc10b-169b-47f7-b512-1e74bb463b0c', url: 'https://github.com/SharanyaJayaram/htmlsample.git']])
             }
         }
-        
-        stage("Build image"){
-            steps{
-            sh 'docker build -t registry2 .'
+        stage('Docker Build image') {
+            steps {
+                script{
+                    sh 'docker build -t htmlimage .'
+                }
             }
         }
-        
-        stage("Adding tag"){
-            steps{
-            sh 'docker tag registry2:latest public.ecr.aws/s2l4n6u7/registry2:latest'
-            }
-        }
-        
-        stage("Pushing the image"){
-            steps{
-            sh 'docker push public.ecr.aws/s2l4n6u7/registry2:latest'
+        stage('Push Image to Dockerhub') {
+            steps {
+//                withCredentials([usernamePassword(credentialsId: 'dockerid', passwordVariable: 'dockeridPassword', usernameVariable: 'dockeridUser')]) {
+//             sh 'docker login -u ${env.dockeridUser} -p ${env.dockeridPassword}'
+            sh 'docker tag htmlimage:latest sharanyajayaram/htmltask:latest'
+            sh 'docker push sharanyajayaram/htmltask:latest'
+            //}
             }
         }
     }
