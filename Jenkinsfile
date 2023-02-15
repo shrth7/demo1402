@@ -15,10 +15,10 @@ pipeline {
         }
         stage('Push Image to Dockerhub') {
             steps {
-//                withCredentials([usernamePassword(credentialsId: 'dockerid', passwordVariable: 'dockeridPassword', usernameVariable: 'dockeridUser')]) {
-//             sh 'docker login -u ${env.dockeridUser} -p ${env.dockeridPassword}'
-            sh 'docker tag htmlimage:latest sharanyajayaram/htmltask:latest'
-            sh 'docker push sharanyajayaram/htmltask:latest'
+               withCredentials([usernamePassword(credentialsId: 'DockerDemo', passwordVariable: 'DockerDemoPassword', usernameVariable: 'DockerDemoUser')]) {
+            sh 'docker login -u ${env.DockerDemoUser} -p ${env.DockerDemoPassword}'
+            sh 'docker tag htmlimage:latest shrth7/devops:latest'
+            sh 'docker push shrth7/devops:latest'
             //}
             }
         }
