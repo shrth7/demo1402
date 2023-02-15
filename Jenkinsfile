@@ -17,6 +17,7 @@ pipeline {
         stage('Push Image to Dockerhub') {
             steps {
                withDockerRegistry([ credentialsId: "dockercred", url: "https://hub.docker.com/" ]) {
+                   sh 'docker login -u ${env.dockeridUser} -p ${env.dockeridPassword}'
                      sh 'docker push shrth7/devops:latest'
                 }
             
