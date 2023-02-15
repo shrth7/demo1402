@@ -9,7 +9,7 @@ pipeline {
         stage('Docker Build image') {
             steps {
                 script{
-                    dockerImage = sh 'docker build -t htmlimage .'
+                    sh 'docker build -t htmlimage .'
                     sh 'docker tag htmlimage:latest shrth7/devops:latest'
                 }
             }
@@ -17,7 +17,7 @@ pipeline {
         stage('Push Image to Dockerhub') {
             steps {
                withDockerRegistry([ credentialsId: "dockercred", url: "https://hub.docker.com/" ]) {
-                    dockerImage.push()
+                     sh 'docker push shrth7/devops:latest'
                 }
             
             
