@@ -19,7 +19,7 @@ pipeline {
             sh 'docker login -u ${env.DockerDemoUser} -p ${env.DockerDemoPassword}'
             sh 'docker tag htmlimage:latest shrth7/devops:latest'
             sh 'docker push shrth7/devops:latest'
-            //}
+            }
             }
         }
     }
