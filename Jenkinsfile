@@ -17,10 +17,10 @@ pipeline {
         stage('Push Image to Dockerhub') {
             steps {
                withDockerRegistry([ credentialsId: "dockercred", url: "https://hub.docker.com/" ]) {
-        dockerImage.push()
+        sh 'docker push shrth7/devops:latest'
         }
             
-//             sh 'docker push shrth7/devops:latest'
+            
             
             }
         }
