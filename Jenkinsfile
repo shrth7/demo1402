@@ -10,16 +10,18 @@ pipeline {
             steps {
                 script{
                     sh 'docker build -t htmlimage .'
+                    sh 'docker tag htmlimage:latest shrth7/devops:latest'
                 }
             }
         }
         stage('Push Image to Dockerhub') {
             steps {
-               withCredentials([usernamePassword(credentialsId: 'dockercred', passwordVariable: 'dockercredPassword', usernameVariable: 'dockercredUser')]) {
-            sh 'docker login -u ${env.dockercredUser} -p ${env.dockercredPassword}'
-            sh 'docker tag htmlimage:latest shrth7/devops:latest'
-            sh 'docker push shrth7/devops:latest'
-            }
+               withDockerRegistry([ credentialsId: "dockercred", url: "https://hub.docker.com/" ]) {
+        dockerImage.push()
+        }
+            
+//             sh 'docker push shrth7/devops:latest'
+            
             }
         }
     }
